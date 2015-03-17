@@ -1,0 +1,11 @@
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\bin\Debug\PositiveImagenes.exe
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\bin\Debug\PositiveImagenes.pdb
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\MainWindow.baml
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\MainWindow.g.cs
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\App.g.cs
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes_MarkupCompile.cache
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.g.resources
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.Properties.Resources.resources
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.csproj.GenerateResource.Cache
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.exe
+C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.pdb

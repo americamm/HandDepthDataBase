@@ -1,0 +1,16 @@
+﻿<Window x:Class="PositiveImagenes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Get DataBase Images " Height="452" Width="805" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
+    <Grid>
+        <Image Height="222" HorizontalAlignment="Left" Margin="26,76,0,0" Name="Gray" Stretch="Fill" VerticalAlignment="Top" Width="247" />
+        <Image Height="222" HorizontalAlignment="Left" Margin="324,76,0,0" Name="depth" Stretch="Fill" VerticalAlignment="Top" Width="247" />
+        <Button Content="Grabar" Height="29" HorizontalAlignment="Left" Margin="91,349,0,0" Name="Grabar" VerticalAlignment="Top" Width="117" Click="Grabar_Click" />
+        <Button Content="Detener Grabación " Height="29" HorizontalAlignment="Left" Margin="399,349,0,0" Name="empezarGrabar" VerticalAlignment="Top" Width="117" IsEnabled="False" Click="empezarGrabar_Click" />
+        <CheckBox Content="Mover ángulo del kinect" Height="19" HorizontalAlignment="Right" Margin="0,372,24,0" Name="checkBox1" VerticalAlignment="Top" Width="155" Checked="checkBox1_Checked" />
+        <Slider Height="336" HorizontalAlignment="Left" Margin="663,12,0,0" Name="anguloSlider" VerticalAlignment="Top" Width="55" IsEnabled="False" Minimum="-27" Maximum="27" SmallChange="1" TickPlacement="Both" ValueChanged="anguloSlider_ValueChanged" Orientation="Vertical" />
+        <CheckBox Content="Imagenes Positivas" Height="22" HorizontalAlignment="Left" Margin="203,31,0,0" Name="Positivas" VerticalAlignment="Top" Width="131" IsEnabled="True" Checked="Positivas_Checked" />
+        <CheckBox Content="Imagenes Negativas" Height="21" HorizontalAlignment="Right" Margin="0,32,267,0" Name="Negativas" VerticalAlignment="Top" Width="133" IsEnabled="True" Checked="Negativas_Checked" />
+        <Label Content="Obtener Imagenes:" Height="26" HorizontalAlignment="Left" Margin="26,25,0,0" Name="label1" VerticalAlignment="Top" Width="120" FontWeight="Bold" />
+    </Grid>
+</Window>
