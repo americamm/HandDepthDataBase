@@ -9,3 +9,5 @@ C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\o
 C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.csproj.GenerateResource.Cache
 C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.exe
 C:\Users\America\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.pdb
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.exe
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\PositiveImagenes\PositiveImagenes\obj\x86\Debug\PositiveImagenes.pdb
