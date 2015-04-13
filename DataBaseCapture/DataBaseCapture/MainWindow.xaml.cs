@@ -36,7 +36,7 @@ namespace DataBaseCapture
         private bool moverK = false;
         private Image<Gray, Byte> depthFrameKinect;
         private string path;
-        private string nombre = "mami";
+        private string nombre = "darien";
         private bool grabar = false; 
         int i = 30; 
 

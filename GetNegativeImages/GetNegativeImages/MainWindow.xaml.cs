@@ -38,7 +38,7 @@ namespace GetNegativeImages
         private bool moverK = false;
         private Image<Gray, Byte> depthFrameKinect;
         private string path;
-        private string nombre = "stuffcerca";
+        private string nombre = "cuboatras";
         private bool grabar = false;
         int i;
         //:::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
