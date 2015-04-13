@@ -4,8 +4,8 @@
         Title="Get DataBase" Height="477" Width="697" Loaded="Window_Loaded">
     <Grid>
         <Label Content="Obtener Imágenes:" FontWeight="Bold" Height="29" HorizontalAlignment="Left" Margin="10,10,0,0" Name="label1" VerticalAlignment="Top" Width="131" />
-        <CheckBox Content="Imágenes Positivas" Height="22" HorizontalAlignment="Left" IsEnabled="True" Margin="176,16,0,0" Name="Positivas" VerticalAlignment="Top" Width="131" />
-        <CheckBox Content="Imágenes Negativas" Height="21" HorizontalAlignment="Right" IsEnabled="True" Margin="0,18,164,0" Name="Negativas" VerticalAlignment="Top" Width="142" />
+        <CheckBox Content="Iluminación" Height="22" HorizontalAlignment="Left" IsEnabled="True" Margin="176,16,0,0" Name="iluminacion" VerticalAlignment="Top" Width="131" Checked="iluminacion_Checked" />
+        <CheckBox Content="No iluminación" Height="21" HorizontalAlignment="Right" IsEnabled="True" Margin="0,18,164,0" Name="noiluminacion" VerticalAlignment="Top" Width="142" Checked="noiluminacion_Checked" />
         <Image Height="274" HorizontalAlignment="Left" Margin="50,80,0,0" Name="displayDepth" Stretch="Fill" VerticalAlignment="Top" Width="404" />
         <CheckBox Content="Mover ángulo del kinect" Height="19" HorizontalAlignment="Right" Margin="0,380,12,0" Name="moverKinect" VerticalAlignment="Top" Width="167" />
         <Slider Height="336" HorizontalAlignment="Left" IsEnabled="False" Margin="567,18,0,0" Maximum="27" Minimum="-27" Name="anguloSlider" Orientation="Vertical" SmallChange="1" TickPlacement="Both" VerticalAlignment="Top" Width="55" />

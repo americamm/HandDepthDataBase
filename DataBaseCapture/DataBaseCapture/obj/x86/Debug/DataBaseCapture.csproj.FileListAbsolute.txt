@@ -12,3 +12,14 @@ C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCaptur
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.exe
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.pdb
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.csprojResolveAssemblyReference.cache
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\opencv_core2410.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\opencv_highgui2410.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\opencv_imgproc2410.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.CV.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.CV.UI.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.Util.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\ZedGraph.dll
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.CV.xml
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.CV.UI.xml
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\Emgu.Util.xml
+C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture_Content.g.cs

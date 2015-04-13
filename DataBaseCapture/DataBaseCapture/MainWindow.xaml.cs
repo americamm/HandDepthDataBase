@@ -13,7 +13,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 using System.IO;
-using System.Drawing; 
+using System.Drawing;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;  
 
 namespace DataBaseCapture
 {
@@ -30,12 +33,13 @@ namespace DataBaseCapture
         private DepthImageStream DepthStream;
         private byte[] DepthImagenPixeles;
         private short[] DepthValoresStream;
-        bool moverK = false; 
-        //private Image<Gray, Byte> depthFrameKinect;
-        //private CascadeClassifier haar1;
-        //dos manos fondo complicado no iluminacion 
-        //private string path1 = @"C:\imagenClassifiersWitoutNoise\BackgroundSimple\Ilumination\twoHand\Noise\";
-        //private string path2 = @"C:\imagenClassifiersWitoutNoise\BackgroundSimple\Ilumination\twoHand\NoNoise\3\";
+        private bool moverK = false;
+        private Image<Gray, Byte> depthFrameKinect;
+        private string path;
+        private string nombre = "ame";
+        private bool grabar = false; 
+        int i = 30; 
+
         //:::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -49,7 +53,7 @@ namespace DataBaseCapture
 
         //:::::::::::::Call Methods::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {   
             EncuentraInicializaKinect();
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
         }
@@ -80,27 +84,28 @@ namespace DataBaseCapture
 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
-            //imagenClasificar = PollDepth();
-            //Display the result of the classifier, so the bytes of the imagen
-            //are converted in a wriablebitmap.  
-            //imageKinect.Source = imagetoWriteablebitmap(imageHaar1);
+            Image<Gray, Byte> imageKinect;
 
-            displayDepth.Source = PollDepth(); 
+            imageKinect = PollDepth();
+            displayDepth.Source =imagetoWriteablebitmap(imageKinect) ;
+
+            if (grabar &&  i<130)
+            {
+                guardaimagen(imageKinect, path, nombre, i-30);
+                i++;
+            } 
+
         } //fin CompositionTarget_Rendering()  
 
-        private WriteableBitmap PollDepth()
+        private Image<Gray,Byte> PollDepth()
         {
             if (this.Kinect != null)
             {
                 this.DepthStream = this.Kinect.DepthStream;
                 this.DepthValoresStream = new short[DepthStream.FramePixelDataLength];
                 this.DepthImagenPixeles = new byte[DepthStream.FramePixelDataLength];
-                //this.depthFrameKinect = new Image<Gray, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight);  
+                this.depthFrameKinect = new Image<Gray, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight);  
                 Array.Clear(DepthImagenPixeles, 0, DepthImagenPixeles.Length); 
-
-                this.ImagenWriteablebitmap = new WriteableBitmap(DepthStream.FrameWidth, DepthStream.FrameHeight, 96, 96, PixelFormats.Gray8, null);
-                this.WriteablebitmapRect = new Int32Rect(0, 0, DepthStream.FrameWidth, DepthStream.FrameHeight);
-                this.WriteablebitmapStride = DepthStream.FrameWidth;
 
                 try
                 {
@@ -113,32 +118,18 @@ namespace DataBaseCapture
                             int index = 0;
                             for (int i = 0; i < frame.PixelDataLength; i++)
                             {
-                                int valorDistancia = DepthValoresStream[i] >> 3;
+                                int valorDistancia = DepthValoresStream[i] >> DepthImageFrame.PlayerIndexBitmaskWidth;
 
-                                if ((valorDistancia <= 1000))
+                                if ((valorDistancia <= 800))
                                 {
-                                    byte byteDistancia = (byte)(255 - (valorDistancia >> 5));
+                                    byte byteDistancia = (byte)(255 - (valorDistancia >> 5)); 
                                     DepthImagenPixeles[index] = byteDistancia;
                                 }
-
-                                /*if (valorDistancia == this.Kinect.DepthStream.UnknownDepth)
-                                {
-                                    DepthImagenPixeles[index] = 0;
-                                }
-                                else if (valorDistancia == this.Kinect.DepthStream.TooFarDepth)
-                                {
-                                    DepthImagenPixeles[index] = 0;
-                                }
-                                else
-                                {
-                                    byte byteDistancia = (byte)(255 - (valorDistancia >> 5));
-                                    DepthImagenPixeles[index] = byteDistancia;
-                                }
-                                */
+                  
                                 index++; //= index + 4;
                             }
 
-                            //depthFrameKinect.Bytes = DepthImagenPixeles; //The bytes are converted to a Imagen(Emgu). This to work with the functions of opencv. 
+                            depthFrameKinect.Bytes = DepthImagenPixeles; //The bytes are converted to a Imagen(Emgu). This to work with the functions of opencv. 
                         }
                     }
                 }
@@ -148,11 +139,45 @@ namespace DataBaseCapture
                 }
             }
 
-            ImagenWriteablebitmap.WritePixels(WriteablebitmapRect,DepthImagenPixeles,WriteablebitmapStride,0);
+            depthFrameKinect = removeNoise(depthFrameKinect,3); 
 
-            return ImagenWriteablebitmap; 
-            //return depthFrameKinect;
+            return depthFrameKinect;
         }//fin PollDepth() 
+
+
+        //:::::::::::::Method to convert a byte[] to a writeablebitmap::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        private WriteableBitmap imagetoWriteablebitmap(Image<Gray, Byte> frameHand)
+        {
+            byte[] imagenPixels = new byte[DepthStream.FrameWidth * DepthStream.FrameHeight];
+
+            this.ImagenWriteablebitmap = new WriteableBitmap(DepthStream.FrameWidth, DepthStream.FrameHeight, 96, 96, PixelFormats.Gray8, null);
+            this.WriteablebitmapRect = new Int32Rect(0, 0, DepthStream.FrameWidth, DepthStream.FrameHeight);
+            this.WriteablebitmapStride = DepthStream.FrameWidth;
+
+            imagenPixels = frameHand.Bytes;
+            ImagenWriteablebitmap.WritePixels(WriteablebitmapRect, imagenPixels, WriteablebitmapStride, 0);
+
+            return ImagenWriteablebitmap;
+        }//end 
+
+
+        //::::::::::::Method to remove the noise, using median filters::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        private Image<Gray, Byte> removeNoise(Image<Gray, Byte> imagenKinet, int sizeWindow)
+        {
+            Image<Gray, Byte> imagenSinRuido;
+
+            imagenSinRuido = imagenKinet.SmoothMedian(sizeWindow);
+
+            return imagenSinRuido;
+        }//endremoveNoise 
+
+
+        //:::::::::::::Method to saves the images with tha detection ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+        private void guardaimagen(Image<Gray, Byte> imagen, string path, string nombre, int i)
+        {
+            imagen.Save(path + nombre + i.ToString() + ".png");
+        }
 
 
         //:::::::::::::Mover el tilt del Kinect::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -171,12 +196,25 @@ namespace DataBaseCapture
         }
         //:::::::::::::termina mover el tilt::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 
+        private void iluminacion_Checked(object sender, RoutedEventArgs e)
+        {
+            path = @"C:\DataBaseHand\ilumination\";
+            grabar = true; 
+        }
+
+        private void noiluminacion_Checked(object sender, RoutedEventArgs e)
+        {
+            path = @"C:\DataBaseHand\noilumination\";
+            grabar = true; 
+        } 
 
         //::::::::::::Method to stop de Kinect:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Kinect.Stop();
-        }
+        }//end 
+
+
 
 
 
