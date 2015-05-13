@@ -29,17 +29,21 @@ namespace DataBaseCapture
         private KinectSensor Kinect;
         private WriteableBitmap ImagenWriteablebitmap;
         private Int32Rect WriteablebitmapRect;
-        private int WriteablebitmapStride;
+        private DepthImagePixel[] DepthPixels; 
         private DepthImageStream DepthStream;
+        private int WriteablebitmapStride;
         private byte[] DepthImagenPixeles;
         private short[] DepthValoresStream;
-        private bool moverK = false;
         private Image<Gray, Byte> depthFrameKinect;
+        
+        private int minDepth;
+        private int maxDepth;        
+        
+        private bool moverK = false;
         private string path;
         private string nombre = "darien";
         private bool grabar = false; 
-        int i = 30; 
-
+        private int i = 30;
         //:::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -69,7 +73,7 @@ namespace DataBaseCapture
             {
                 if (Kinect.Status == KinectStatus.Connected)
                 {
-                    Kinect.ColorStream.Enable();
+                    //Kinect.ColorStream.Enable();
                     Kinect.DepthStream.Enable();
                     Kinect.DepthStream.Range = DepthRange.Near;
                     Kinect.Start();
@@ -84,14 +88,17 @@ namespace DataBaseCapture
 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
-            Image<Gray, Byte> imageKinect;
+            Image<Bgra, Byte> imageKinectBGR;
+            Image<Gray, Byte> imagenKinectGray; 
 
-            imageKinect = PollDepth();
-            displayDepth.Source =imagetoWriteablebitmap(imageKinect) ;
+            imagenKinectGray = PollDepth();
+            imageKinectBGR = imagenKinectGray.Convert<Bgra, Byte>(); 
+
+            displayDepth.Source =imagetoWriteablebitmap(imagenKinectGray);
 
             if (grabar &&  i<130)
             {
-                guardaimagen(imageKinect, path, nombre, i-30);
+                guardaimagen(imagenKinectGray, path, nombre, i-30);
                 i++;
             } 
 
@@ -99,26 +106,36 @@ namespace DataBaseCapture
 
         private Image<Gray,Byte> PollDepth()
         {
+            Image<Bgr, Byte> depthFrameKinectBGR = new Image<Bgr, Byte>(640,480); 
+            
+
             if (this.Kinect != null)
             {
                 this.DepthStream = this.Kinect.DepthStream;
-                this.DepthValoresStream = new short[DepthStream.FramePixelDataLength];
-                this.DepthImagenPixeles = new byte[DepthStream.FramePixelDataLength];
-                this.depthFrameKinect = new Image<Gray, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight);  
+                //this.DepthValoresStream = new short[DepthStream.FramePixelDataLength];
+                this.DepthPixels = new DepthImagePixel[DepthStream.FramePixelDataLength]; 
+                this.DepthImagenPixeles = new byte[DepthStream.FramePixelDataLength*sizeof(int)];
+                this.depthFrameKinect = new Image<Gray, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight);
+                
                 Array.Clear(DepthImagenPixeles, 0, DepthImagenPixeles.Length); 
-
+                
                 try
                 {
                     using (DepthImageFrame frame = this.Kinect.DepthStream.OpenNextFrame(100))
                     {
                         if (frame != null)
                         {
-                            frame.CopyPixelDataTo(this.DepthValoresStream);
+                            frame.CopyDepthImagePixelDataTo(this.DepthPixels); 
+
+                            minDepth = 400;
+                            maxDepth = 3000; 
 
                             int index = 0;
-                            for (int i = 0; i < frame.PixelDataLength; i++)
+                            for (int i = 0; i < DepthPixels.Length; ++i)
                             {
-                                int valorDistancia = DepthValoresStream[i] >> DepthImageFrame.PlayerIndexBitmaskWidth;
+                                short depth = DepthPixels[i].Depth;
+ 
+                                /*int valorDistancia = DepthValoresStream[i] >> DepthImageFrame.PlayerIndexBitmaskWidth;
 
                                 if ((valorDistancia <= 800))
                                 {
@@ -127,9 +144,18 @@ namespace DataBaseCapture
                                 }
                   
                                 index++; //= index + 4;
+                                 */ 
+
+                                byte intensity = (byte)( (depth >=minDepth) && (depth<=maxDepth) ? depth : 0);  
+
+                                DepthImagenPixeles[index++] =intensity; 
+                                DepthImagenPixeles[index++] =intensity; 
+                                DepthImagenPixeles[index++] =intensity;
+
+                                ++index; 
                             }
 
-                            depthFrameKinect.Bytes = DepthImagenPixeles; //The bytes are converted to a Imagen(Emgu). This to work with the functions of opencv. 
+                            depthFrameKinectBGR.Bytes = DepthImagenPixeles; //The bytes are converted to a Imagen(Emgu). This to work with the functions of opencv. 
                         }
                     }
                 }
@@ -139,6 +165,7 @@ namespace DataBaseCapture
                 }
             }
 
+            depthFrameKinect = depthFrameKinectBGR.Convert<Gray, Byte>(); 
             depthFrameKinect = removeNoise(depthFrameKinect,3); 
 
             return depthFrameKinect;
@@ -148,13 +175,16 @@ namespace DataBaseCapture
         //:::::::::::::Method to convert a byte[] to a writeablebitmap::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private WriteableBitmap imagetoWriteablebitmap(Image<Gray, Byte> frameHand)
         {
+            Image<Bgra, Byte> frameBGR = new Image<Bgra, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight); 
             byte[] imagenPixels = new byte[DepthStream.FrameWidth * DepthStream.FrameHeight];
 
-            this.ImagenWriteablebitmap = new WriteableBitmap(DepthStream.FrameWidth, DepthStream.FrameHeight, 96, 96, PixelFormats.Gray8, null);
+            this.ImagenWriteablebitmap = new WriteableBitmap(DepthStream.FrameWidth, DepthStream.FrameHeight, 96, 96, PixelFormats.Bgr32, null);
             this.WriteablebitmapRect = new Int32Rect(0, 0, DepthStream.FrameWidth, DepthStream.FrameHeight);
-            this.WriteablebitmapStride = DepthStream.FrameWidth;
+            this.WriteablebitmapStride = DepthStream.FrameWidth*4;
 
-            imagenPixels = frameHand.Bytes;
+            frameBGR = frameHand.Convert<Bgra, Byte>();
+            imagenPixels = frameBGR.Bytes;
+
             ImagenWriteablebitmap.WritePixels(WriteablebitmapRect, imagenPixels, WriteablebitmapStride, 0);
 
             return ImagenWriteablebitmap;
@@ -211,6 +241,7 @@ namespace DataBaseCapture
         //::::::::::::Method to stop de Kinect:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            Kinect.DepthStream.Disable();
             Kinect.Stop();
         }//end 
 
