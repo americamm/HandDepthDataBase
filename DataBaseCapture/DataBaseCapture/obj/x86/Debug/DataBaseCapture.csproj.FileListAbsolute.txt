@@ -45,3 +45,4 @@ C:\Users\America\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj
 C:\Users\America\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.csproj.GenerateResource.Cache
 C:\Users\America\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.exe
 C:\Users\America\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.pdb
+C:\Users\America\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.csprojResolveAssemblyReference.cache

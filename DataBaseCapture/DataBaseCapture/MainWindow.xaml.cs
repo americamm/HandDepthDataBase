@@ -41,9 +41,9 @@ namespace DataBaseCapture
         
         private bool moverK = false;
         private string path;
-        private string nombre = "darien";
+        private string nombre = "Fondo6";
         private bool grabar = false; 
-        private int i = 30;
+        private int i;
         //:::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -96,17 +96,18 @@ namespace DataBaseCapture
 
             displayDepth.Source =imagetoWriteablebitmap(imagenKinectGray);
 
-            if (grabar &&  i<130)
+            if (grabar)
             {
-                guardaimagen(imagenKinectGray, path, nombre, i-30);
+                guardaimagen(imagenKinectGray, path, nombre, i);
                 i++;
+                Record.IsEnabled = false; 
             } 
 
         } //fin CompositionTarget_Rendering()  
 
         private Image<Gray,Byte> PollDepth()
         {
-            Image<Bgr, Byte> depthFrameKinectBGR = new Image<Bgr, Byte>(640,480); 
+            Image<Bgra, Byte> depthFrameKinectBGR = new Image<Bgra, Byte>(640,480); 
             
 
             if (this.Kinect != null)
@@ -114,7 +115,7 @@ namespace DataBaseCapture
                 this.DepthStream = this.Kinect.DepthStream;
                 //this.DepthValoresStream = new short[DepthStream.FramePixelDataLength];
                 this.DepthPixels = new DepthImagePixel[DepthStream.FramePixelDataLength]; 
-                this.DepthImagenPixeles = new byte[DepthStream.FramePixelDataLength*sizeof(int)];
+                this.DepthImagenPixeles = new byte[DepthStream.FramePixelDataLength*4];
                 this.depthFrameKinect = new Image<Gray, Byte>(DepthStream.FrameWidth, DepthStream.FrameHeight);
                 
                 Array.Clear(DepthImagenPixeles, 0, DepthImagenPixeles.Length); 
@@ -128,23 +129,12 @@ namespace DataBaseCapture
                             frame.CopyDepthImagePixelDataTo(this.DepthPixels); 
 
                             minDepth = 400;
-                            maxDepth = 3000; 
+                            maxDepth = 2000; 
 
                             int index = 0;
                             for (int i = 0; i < DepthPixels.Length; ++i)
                             {
                                 short depth = DepthPixels[i].Depth;
- 
-                                /*int valorDistancia = DepthValoresStream[i] >> DepthImageFrame.PlayerIndexBitmaskWidth;
-
-                                if ((valorDistancia <= 800))
-                                {
-                                    byte byteDistancia = (byte)(255 - (valorDistancia >> 5)); 
-                                    DepthImagenPixeles[index] = byteDistancia;
-                                }
-                  
-                                index++; //= index + 4;
-                                 */ 
 
                                 byte intensity = (byte)( (depth >=minDepth) && (depth<=maxDepth) ? depth : 0);  
 
@@ -224,18 +214,29 @@ namespace DataBaseCapture
             if (moverK)
                 Kinect.ElevationAngle = (int)anguloSlider.Value;
         }
-        //:::::::::::::termina mover el tilt::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+        //:::::::::::::Save info stuff::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+        private void Record_Click(object sender, RoutedEventArgs e)
+        {
+            i = 0;
+            grabar = true;
+            StopRecord.IsEnabled = true; 
+        }
+
+        private void StopRecord_Click(object sender, RoutedEventArgs e)
+        {
+            grabar = false;
+            Record.IsEnabled = true; 
+        } 
 
         private void iluminacion_Checked(object sender, RoutedEventArgs e)
         {
             path = @"C:\DataBaseHand\ilumination\";
-            grabar = true; 
+            
         }
 
         private void noiluminacion_Checked(object sender, RoutedEventArgs e)
         {
             path = @"C:\DataBaseHand\noilumination\";
-            grabar = true; 
         } 
 
         //::::::::::::Method to stop de Kinect:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
