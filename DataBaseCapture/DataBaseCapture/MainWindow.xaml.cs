@@ -41,7 +41,7 @@ namespace DataBaseCapture
         
         private bool moverK = false;
         private string path;
-        private string nombre = "Fondo6";
+        private string nombre = "Me";
         private bool grabar = false; 
         private int i;
         //:::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -7,8 +7,6 @@ C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCaptur
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.csproj.GenerateResource.Cache
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\DataBaseCapture.exe
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\DataBaseCapture.pdb
-C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\PositiveImagenes.exe
-C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\bin\Debug\PositiveImagenes.pdb
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.exe
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.pdb
 C:\Users\AmericaIvone\Documents\HandDepthDataBase\DataBaseCapture\DataBaseCapture\obj\x86\Debug\DataBaseCapture.csprojResolveAssemblyReference.cache
